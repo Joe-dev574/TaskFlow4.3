@@ -8,29 +8,44 @@
 import SwiftUI
 
 enum Category: String, CaseIterable {
-    case today  = "Today"
+    // Time-Based Categories
+    case today = "Today"
     case upcoming = "Upcoming"
-    case ideas  = "Ideas"
-    case complete = "Complete"
-    case dates = "Dates!"
+    case recurringDates = "Recurring Dates"
+    
+    // Status-Based Categories
+    case completed = "Completed"
+    
+    // Planning Categories
+    case ideas = "Ideas"
     
     var color: Color {
         switch self {
+        // Time-Based Colors
         case .today: .darkBlue
         case .upcoming: .launchAccent
-        case .complete: .green
-       case .dates: Color.primary
+        case .recurringDates: Color.primary
+        
+        // Status-Based Colors
+        case .completed: .green
+        
+        // Planning Colors
         case .ideas: .yellow
         }
     }
     
     var symbolImage: String {
         switch self {
+        // Time-Based Symbols
         case .today: "alarm"
         case .upcoming: "calendar"
-        case .complete: "calendar.badge.checkmark"
-        case .dates: "repeat"
-        case .ideas: "lightbulb.max"            
+        case .recurringDates: "repeat"
+        
+        // Status-Based Symbols
+        case .completed: "calendar.badge.checkmark"
+        
+        // Planning Symbols
+        case .ideas: "lightbulb.max"
         }
     }
 }

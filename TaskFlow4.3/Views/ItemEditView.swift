@@ -14,11 +14,10 @@ struct ItemEditView: View {
     @Environment(\.dismiss) private var dismiss
     let item: Item
     
-   
+    
     @State private var title = ""
     @State private var remarks = ""
     @State private var dateAdded = Date.now
-    @State private var dateDue = Date.now
     @State private var dateStarted = Date.now
     @State private var dateCompleted = Date.now
     @State private var firstView = true
@@ -28,79 +27,64 @@ struct ItemEditView: View {
     
     
     var body: some View {
-        HStack {
-            CategoryCheckBox(category: $category)
-        }
-        
-        VStack(alignment: .leading) {
-            GroupBox {
-                LabeledContent {
-                    DatePicker("", selection: $dateAdded, displayedComponents: .date)
-                } label: {
-                    Text("Date Added")
-                }
-                if category == .today || category == .complete {
-                    LabeledContent {
-                        DatePicker("", selection: $dateStarted, in: dateAdded..., displayedComponents: .date)
-                    } label: {
-                        Text("Date Started")
+        NavigationStack{
+            VStack(alignment: .center) {
+                
+                ScrollView{
+                    Section("Select Status") {
+                        CategoryCheckBox(category: $category)
                     }
-                }
-                if category == .complete {
-                    LabeledContent {
-                        DatePicker("", selection: $dateCompleted, in: dateStarted..., displayedComponents: .date)
-                    } label: {
-                        Text("Date Completed")
-                    }
-                }
-            }
-            .onChange(of: category) { oldValue, newValue in
-                if !firstView {
-                    if newValue == .upcoming{
-                        dateStarted = Date.distantPast
-                        dateDue = Date.distantFuture
-                    } else if newValue == .upcoming && oldValue == .complete {
-                        // from completed to inProgress
-                        dateCompleted = Date.distantPast
-                    } else if newValue == .today && oldValue == .upcoming {
-                        // Book has been started
-                        dateStarted = Date.now
-                    } else if newValue == .complete && oldValue == .upcoming {
-                        // Forgot to start book
-                        dateCompleted = Date.now
-                        dateStarted = dateAdded
-                    } else {
-                        // completed
-                        dateCompleted = Date.now
-                    }
-                    firstView = false
-                }
-            }
-            Divider()
-            
-            ScrollView(.vertical) {
-                VStack(spacing: 15) {
-                    //MARK:  DATE PICKER GROUP
+                    .padding(.bottom, 10)
                     Section("Timeline") {
-                        GroupBox{
-                            HStack{
-                                //MARK:  DATE CREATED DATA LINE
-                                Text("Date Created: ")
-                                    .foregroundStyle(.primary)
-                                    .fontDesign(.serif)
-                                    .font(.callout)
-                                Spacer()
-                                Image(systemName: "calendar.badge.clock")
-                                    .fontDesign(.serif)
-                                    .foregroundStyle(.primary)
-                                    .font(.system(size: 14))
-                                Text(dateAdded.formatted(.dateTime))
-                                    .fontDesign(.serif)
-                                    .foregroundColor(.primary)
-                                    .font(.system(size: 14))
+                        GroupBox {
+                            LabeledContent {
+                                DatePicker("", selection: $dateAdded, displayedComponents: .date)
+                            } label: {
+                                Text("Date Added")
                             }
-                        }
+                            if category == .today || category == .completed {
+                                LabeledContent {
+                                    DatePicker("", selection: $dateStarted, in: dateAdded..., displayedComponents: .date)
+                                } label: {
+                                    Text("Date Started")
+                                }
+                            }
+                            if category == .completed{
+                                LabeledContent {
+                                    DatePicker("", selection: $dateCompleted, in: dateStarted..., displayedComponents: .date)
+                                } label: {
+                                    Text("Date Completed")
+                                }
+                            }
+                        }.padding(.horizontal, 12)
+                            .onChange(of: category) { oldValue, newValue in
+                                if !firstView {
+                                    if newValue == .upcoming {
+                                        dateStarted = Date.distantPast
+                                        dateCompleted = Date.distantPast
+                                    } else if newValue == .upcoming && oldValue == .completed {
+                                        // from completed to inProgress
+                                        dateCompleted = Date.distantPast
+                                    } else if newValue == .upcoming && oldValue == .ideas {
+                                        // Book has been started
+                                        dateStarted = Date.now
+                                    } else if newValue == .completed && oldValue == .ideas {
+                                        // Forgot to start book
+                                        dateCompleted = Date.now
+                                        dateStarted = dateAdded
+                                    } else {
+                                        // completed
+                                        dateCompleted = Date.now
+                                    }
+                                    firstView = false
+                                }
+                            }
                     }
+                            .fontDesign(.serif)
+                        Divider()
+                        VStack(spacing: 15) {
+                            //MARK:  DATE PICKER GROUP
+                            
                             ///title
                             Section("Title") {
                                 ZStack(alignment: .topLeading) {
@@ -145,21 +129,9 @@ struct ItemEditView: View {
                             }
                             .fontDesign(.serif)
                             .background(.background)
-                        }  .padding(.horizontal, 7)
-                    }
-                    .padding(.horizontal, 10)
-                    .fontDesign(.serif)
-                    .padding(5)
-                    }
-                    HStack {
-                        Button("Tags", systemImage: "bookmark.fill") {
-                            showTags.toggle()
                         }
-                        .sheet(isPresented: $showTags) {
-                            TagView()
-                        }
+                        .padding(.horizontal, 7)
                     }
-                    .padding()
                     .textFieldStyle(.roundedBorder)
                     .navigationTitle(title)
                     .navigationBarTitleDisplayMode(.inline)
@@ -178,6 +150,8 @@ struct ItemEditView: View {
                             .buttonStyle(.borderedProminent)
                         }
                     }
+                }
+            }
                     .onAppear {
                         category = Category(rawValue: item.category)!
                         title = item.title
@@ -186,8 +160,6 @@ struct ItemEditView: View {
                         dateStarted = item.dateStarted
                         dateCompleted = item.dateCompleted
                     }
-                }
-                
                 var changed: Bool {
                     category != Category(rawValue: item.category)!
                     || title != item.title
@@ -196,9 +168,8 @@ struct ItemEditView: View {
                     || dateStarted != item.dateStarted
                     || dateCompleted != item.dateCompleted
                 }
-                }
-            
-      
+            }
+        }
 #Preview {
     let preview = Preview(Item.self)
    return  NavigationStack {
