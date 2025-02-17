@@ -50,8 +50,8 @@ struct ItemsList: View {
                                     .padding(.horizontal, 12)
                             }
                         }
-                      
-                            }
+                        
+                      }
                         }
                     }
             }

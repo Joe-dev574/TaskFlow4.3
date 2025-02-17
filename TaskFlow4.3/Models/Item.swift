@@ -18,7 +18,8 @@ final class Item {
     var dateDue: Date = Date.now
     var dateCompleted: Date = Date.now
     var category: String
-    
+    @Relationship(deleteRule: .cascade)
+    var itemTasks: [ItemTask]?
   
     
     init(

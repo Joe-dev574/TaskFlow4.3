@@ -80,57 +80,61 @@ struct ItemEditView: View {
                                 }
                             }
                     }
-                            .fontDesign(.serif)
-                        Divider()
-                        VStack(spacing: 15) {
-                            //MARK:  DATE PICKER GROUP
-                            
-                            ///title
-                            Section("Title") {
-                                ZStack(alignment: .topLeading) {
-                                    if title.isEmpty {
-                                        Text("Enter title here...")
-                                            .multilineTextAlignment(.leading)
-                                            .lineLimit(3)
-                                            .padding(10)
-                                            .fontDesign(.serif)
-                                            .foregroundStyle(.secondary)
-                                    }
-                                    TextEditor(text: $title)
-                                        .scrollContentBackground(.hidden)
-                                        .background(Color.gray.opacity(0.1))
-                                        .font(.system(size: 16))
+                    .fontDesign(.serif)
+                    Divider()
+                    VStack(spacing: 15) {
+                        //MARK:  DATE PICKER GROUP
+                        
+                        ///title
+                        Section("Title") {
+                            ZStack(alignment: .topLeading) {
+                                if title.isEmpty {
+                                    Text("Enter title here...")
+                                        .multilineTextAlignment(.leading)
+                                        .lineLimit(3)
+                                        .padding(10)
                                         .fontDesign(.serif)
+                                        .foregroundStyle(.secondary)
                                 }
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 7)
-                                        .stroke(Color.secondary, lineWidth: 1))
+                                TextEditor(text: $title)
+                                    .scrollContentBackground(.hidden)
+                                    .background(Color.gray.opacity(0.1))
+                                    .font(.system(size: 16))
+                                    .fontDesign(.serif)
                             }
-                            .padding(.horizontal, 7)
-                            ///description
-                            Section("Brief Description") {
-                                ZStack(alignment: .topLeading) {
-                                    if remarks.isEmpty {
-                                        Text("Brief description here...")
-                                            .multilineTextAlignment(.leading)
-                                            .lineLimit(3)
-                                            .padding(10)
-                                            .foregroundStyle(.secondary)
-                                    }
-                                    TextEditor(text: $remarks)
-                                        .scrollContentBackground(.hidden)
-                                        .background(Color.gray.opacity(0.1))
-                                        .font(.system(size: 16))
-                                        .fontDesign(.serif)
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 7)
-                                                .stroke(Color.gray, lineWidth: 1))
-                                }
-                            }
-                            .fontDesign(.serif)
-                            .background(.background)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 7)
+                                    .stroke(Color.secondary, lineWidth: 1))
                         }
                         .padding(.horizontal, 7)
+                        ///description
+                        Section("Brief Description") {
+                            ZStack(alignment: .topLeading) {
+                                if remarks.isEmpty {
+                                    Text("Brief description here...")
+                                        .multilineTextAlignment(.leading)
+                                        .lineLimit(3)
+                                        .padding(10)
+                                        .foregroundStyle(.secondary)
+                                }
+                                TextEditor(text: $remarks)
+                                    .scrollContentBackground(.hidden)
+                                    .background(Color.gray.opacity(0.1))
+                                    .font(.system(size: 16))
+                                    .fontDesign(.serif)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 7)
+                                            .stroke(Color.gray, lineWidth: 1))
+                            }
+                        }
+                        .fontDesign(.serif)
+                        .background(.background)
+                        .padding(.horizontal, 12)
+                        
+                        Section("Item Task List ") {
+                            //MARK:  TASK LIST
+                        
+                        }
                     }
                     .textFieldStyle(.roundedBorder)
                     .navigationTitle(title)
@@ -151,25 +155,28 @@ struct ItemEditView: View {
                         }
                     }
                 }
+                
+            }.padding(.horizontal, 12)
+        }
+            .onAppear {
+                category = Category(rawValue: item.category)!
+                title = item.title
+                remarks = item.remarks
+                dateAdded = item.dateAdded
+                dateStarted = item.dateStarted
+                dateCompleted = item.dateCompleted
             }
-                    .onAppear {
-                        category = Category(rawValue: item.category)!
-                        title = item.title
-                        remarks = item.remarks
-                        dateAdded = item.dateAdded
-                        dateStarted = item.dateStarted
-                        dateCompleted = item.dateCompleted
-                    }
-                var changed: Bool {
-                    category != Category(rawValue: item.category)!
-                    || title != item.title
-                    || remarks != item.remarks
-                    || dateAdded != item.dateAdded
-                    || dateStarted != item.dateStarted
-                    || dateCompleted != item.dateCompleted
-                }
+            var changed: Bool {
+                category != Category(rawValue: item.category)!
+                || title != item.title
+                || remarks != item.remarks
+                || dateAdded != item.dateAdded
+                || dateStarted != item.dateStarted
+                || dateCompleted != item.dateCompleted
             }
         }
+    }
+
 #Preview {
     let preview = Preview(Item.self)
    return  NavigationStack {
