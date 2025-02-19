@@ -55,7 +55,7 @@ struct AddItemView: View {
                             if category == .upcoming {
                                 DatePicker("Date Due", selection: $dateDue, in: dateAdded..., displayedComponents: .date)
                             }
-                            if category == .recurringDates {
+                            if category == .scheduled {
                                 DatePicker("Date Due", selection: $dateDue, displayedComponents: .date)
                             }
                             if category == .completed {

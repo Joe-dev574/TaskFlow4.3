@@ -32,7 +32,6 @@ struct TaskCardView: View {
     
     var body: some View {
         HStack(alignment: .top) {
-            
             Image(systemName: checked ? "circle.inset.filled": "circle")
                 .font(.title2)
                 .padding([.trailing], 5)
@@ -40,28 +39,22 @@ struct TaskCardView: View {
                     checked.toggle()
                     onEvent(.onChecked(itemTask, checked))
                 }
-            
             VStack {
                 Text(itemTask.name)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 HStack {
-                    
                     if let taskDate = itemTask.taskDate {
                         Text(formatTaskDate(taskDate))
                     }
-                    
                     if let taskTime = itemTask.taskTime {
                         Text(taskTime, style: .time)
                     }
-                    
                 }.font(.caption)
                     .foregroundStyle(.gray)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
-            
             Spacer()
-            
         }.contentShape(Rectangle())
             .onTapGesture {
                 onEvent(.onSelect(itemTask))
@@ -80,8 +73,3 @@ struct TaskCellViewContainer: View {
     }
 }
 
-#Preview { @MainActor in
-    TaskCellViewContainer()
-   
-      
-}

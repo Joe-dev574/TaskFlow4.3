@@ -30,7 +30,7 @@ struct ItemEditView: View {
         NavigationStack{
             VStack(alignment: .center) {
                 
-                ScrollView{
+                ScrollView(.vertical, showsIndicators: false){
                     Section("Select Status") {
                         CategoryCheckBox(category: $category)
                     }
@@ -101,11 +101,11 @@ struct ItemEditView: View {
                                     .background(Color.gray.opacity(0.1))
                                     .font(.system(size: 16))
                                     .fontDesign(.serif)
-                            }
+                            }.fontDesign(.serif)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 7)
                                     .stroke(Color.secondary, lineWidth: 1))
-                        }
+                        }.fontDesign(.serif)
                         .padding(.horizontal, 7)
                         ///description
                         Section("Brief Description") {
@@ -130,34 +130,63 @@ struct ItemEditView: View {
                         .fontDesign(.serif)
                         .background(.background)
                         .padding(.horizontal, 12)
-                        
-                        Section("Item Task List ") {
+            
                             //MARK:  TASK LIST
+                        Text("Tasks")
+                            .font(.system(size: 18))
+                            .foregroundColor(.primary)
+                            .padding(.top, 5)
+                            .fontDesign(.serif)
                         
-                        }
-                    }
-                    .textFieldStyle(.roundedBorder)
-                    .navigationTitle(title)
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar {
-                        if changed {
-                            Button("Update") {
-                                item.category = category.rawValue
-                                item.title = title
-                                item.remarks = remarks
-                                item.dateAdded = dateAdded
-                                item.dateStarted = dateStarted
-                                item.dateCompleted = dateCompleted
-                                
-                                dismiss()
-                            }
-                            .buttonStyle(.borderedProminent)
-                        }
+                            NavigationLink{
+                                TaskListView()
+                            } label: {
+                                HStack {
+                                    Image(systemName: "list.bullet")
+                                        .font(.system(size: 16))
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.primary)
+                                    Text("Tasks")
+                                        .font(.system(size: 16))
+                                        .foregroundColor(.primary)
+                                    Spacer( )
+                                    Image(systemName: "chevron.right")
+                                        .font(.system(size: 16))
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.primary)
+                                }
+                                .padding(.horizontal, 10)
+                                .fontDesign(.serif)
+                                .padding(10)
+                                .overlay(RoundedRectangle(cornerRadius: 7)
+                                    .stroke(Color.gray, lineWidth: 2)
+                                    .background(Color.gray.opacity(0.1))
+                                    .padding(.horizontal, 10))
+                        }  .fontDesign(.serif)
+                        
                     }
                 }
-                
-            }.padding(.horizontal, 12)
-        }
+                .textFieldStyle(.roundedBorder)
+                .navigationTitle(title)
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    if changed {
+                        Button("Update") {
+                            item.category = category.rawValue
+                            item.title = title
+                            item.remarks = remarks
+                            item.dateAdded = dateAdded
+                            item.dateStarted = dateStarted
+                            item.dateCompleted = dateCompleted
+                            
+                            dismiss()
+                        }
+                        .buttonStyle(.borderedProminent)
+                    }
+                }
+            }
+            
+        }.padding(.horizontal, 12)
             .onAppear {
                 category = Category(rawValue: item.category)!
                 title = item.title

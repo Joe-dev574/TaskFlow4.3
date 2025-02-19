@@ -11,7 +11,7 @@ enum Category: String, CaseIterable {
     // Time-Based Categories
     case today = "Today"
     case upcoming = "Upcoming"
-    case recurringDates = "Recurring Dates"
+    case scheduled = "Scheduled"
     
     // Status-Based Categories
     case completed = "Completed"
@@ -24,7 +24,7 @@ enum Category: String, CaseIterable {
         // Time-Based Colors
         case .today: .darkBlue
         case .upcoming: .launchAccent
-        case .recurringDates: Color.primary
+        case .scheduled: Color.primary
         
         // Status-Based Colors
         case .completed: .green
@@ -39,7 +39,7 @@ enum Category: String, CaseIterable {
         // Time-Based Symbols
         case .today: "alarm"
         case .upcoming: "calendar"
-        case .recurringDates: "repeat"
+        case .scheduled: "repeat"
         
         // Status-Based Symbols
         case .completed: "calendar.badge.checkmark"

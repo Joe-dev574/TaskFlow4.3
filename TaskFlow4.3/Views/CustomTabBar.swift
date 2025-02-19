@@ -18,15 +18,15 @@ struct CustomTabBar: View {
                 let allOffset = size.width - (10 * CGFloat(Category.allCases.count - 1))
                 
                 HStack(spacing: 5) {
-                    HStack(spacing: activeTab == .recurringDates ? -15 : 8) {
-                        ForEach(Category.allCases.filter({ $0 != .recurringDates }), id: \.rawValue) { tab in
+                    HStack(spacing: activeTab == .scheduled ? -15 : 8) {
+                        ForEach(Category.allCases.filter({ $0 != .scheduled }), id: \.rawValue) { tab in
                             ResizableTabButton(tab)
                         }
                         .fontDesign(.serif)
                     }
                     
-                    if activeTab == .recurringDates {
-                        ResizableTabButton(.recurringDates)
+                    if activeTab == .scheduled {
+                        ResizableTabButton(.scheduled)
                             .transition(.offset(x: allOffset))
                     }
                 }
@@ -53,7 +53,7 @@ struct CustomTabBar: View {
                         .lineLimit(1)
                 }
             }
-            .foregroundStyle(tab == .recurringDates ? schemeColor : activeTab == tab ? .white : .gray)
+            .foregroundStyle(tab == .scheduled ? schemeColor : activeTab == tab ? .white : .gray)
             .frame(maxHeight: .infinity)
             .frame(maxWidth: activeTab == tab ? .infinity : nil)
             .padding(.horizontal, activeTab == tab ? 10 : 15)
@@ -65,14 +65,14 @@ struct CustomTabBar: View {
             .background {
                 RoundedRectangle(cornerRadius: 10, style: .continuous)
                     .fill(.background)
-                    .padding(activeTab == .recurringDates && tab != .recurringDates ? -3 : 3)
+                    .padding(activeTab == .scheduled && tab != .scheduled ? -3 : 3)
             }
             .contentShape(.rect)
             .onTapGesture {///double tap of tab to render the "dates" tab viewable for display 
-                guard tab != .recurringDates else { return }
+                guard tab != .scheduled else { return }
                 withAnimation(.bouncy) {
                     if activeTab == tab {
-                        activeTab = .recurringDates
+                        activeTab = .scheduled
                     } else {
                         activeTab = tab
                     }

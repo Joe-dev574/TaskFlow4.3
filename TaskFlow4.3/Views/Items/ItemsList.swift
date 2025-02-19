@@ -23,10 +23,10 @@ struct ItemsList: View {
             return items.filter { $0.category == "Upcoming" }.sorted { $0.dateAdded < $1.dateAdded }
         case .ideas:
             return items.filter { $0.category == "Ideas" }.sorted { $0.title < $1.title }
-        case .recurringDates:
-            return items.filter { $0.category == "Dates!" }.sorted { $0.dateAdded < $1.dateAdded }
+        case .scheduled:
+            return items.filter { $0.category == "Scheduled" }.sorted { $0.dateAdded < $1.dateAdded }
         case .completed:
-            return items.filter { $0.category == "Complete"  }.sorted { $0.dateCompleted < $1.dateCompleted }
+            return items.filter { $0.category == "Completed"  }.sorted { $0.dateCompleted < $1.dateCompleted }
         }
     }
     
@@ -36,7 +36,7 @@ struct ItemsList: View {
                 CustomTabBar(activeTab: $activeTab)
                     LazyVStack(alignment: .leading) {
                         // Dynamic text based on the selected tab
-                        Text(activeTab.rawValue + (activeTab == .recurringDates ? " Thou Shalt Not Forget! " : " Shit"))
+                        Text(activeTab.rawValue + (activeTab == .scheduled ? " Thou Shalt Not Forget! " : " Shit"))
                             .font(.title3)
                             .fontDesign(.serif)
                             .foregroundColor(.gray)
